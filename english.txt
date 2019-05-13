@@ -1,0 +1,20 @@
+TRUE
+-FALSE
+TRUE
+TRUE
+TRUE
+FALSE
+
+RESULT
+-
+AFFECT
+CAUSE
+RESULT
+LEAD
+
+He´s much friendlier than he used to be. Getting married
+has had a positive _ on him.
+Having no money at all can often _ to problems in a relationship
+I hear John and Barbara have split up. I hope it
+won´t _ our friendship with them
+It´s 
