@@ -1,3 +1,0 @@
-print("Hola UPY")
-
-'''hola''' 
