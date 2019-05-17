@@ -4,7 +4,10 @@ use database
 
 #The command “use” automatically creates you a database and puts you inside of it with the name “database”
 
-var new = {“name”: “Daniel”, “lastname”: “Cruz”} 
+var new = {
+	     “name”: “Daniel”, 
+             “lastname”: “Cruz”
+	  } 
 
 #This crates you a variable called new, which have your name and your last name
 
@@ -12,7 +15,10 @@ new
 
 #This show you your variable and what is inside of it
 
-db.new1.insert ({“name”: Daniel, “lastname”: “Cruz”}) 
+db.new1.insert ({
+		   “name”: Daniel, 
+	           “lastname”: “Cruz”
+		}) 
 
 #This creates you a new database called new1 and with this command you insert the data inside of it
 
@@ -26,15 +32,52 @@ db.new1.find()
 
 #If you want to find a specific database, you have to punt inf the searcher, something like this: 
 
-db.new1.find({“name”: “Daniel”}) 
+db.new1.find({
+		“name”: “Daniel”
+	    }) 
 
 #This will show you the specific new1, which has the exactly data you put in order to find.
 
+#If you for example, want to find documents which has the vendor Kettlecooked and will match with all of them, like this:
+db.potions.find({"vendor": "Kettlecooked"})
+{     
+   "_id": ObjectId("55d232a5819aa726..."),
+   "name":"Invisibility", 
+   "vendor":"Kettlecooked" }  
+{  "_id": ObjectId("55c3b9501aad0cb0..."),
+   "name":"Shrinking", 
+   "vendor":"Kettlecooked"}
+
 #If your for example want to save inside the database a object, you could use this:
 
-db.new1.insert ({“Ingredients”: {“strength”: 2, “flavot”: 5}) 
+db.new1.insert ({
+		    “Ingredients”: {“strength”: 2, “flavot”: 5
+	       }) 
 
 #As you could see, you not only can store strings you can also add Numbers: 2, 3.456; Boolenas: True, False; Arrays: #[
 #new array]; Null values; the date, but in this case, the months start in 0, so, if for example, you, want to use the month March, 
 #you should put something like this: new Date(2012, 2, 8), and this will show you the March 8th of 2012.
- 
+
+#Delete a single document
+
+#The remove() collection method will delete documents that match the provided query
+
+db.potions.remove(
+	{"name": "Love"}
+)
+
+WriteResult({ "nRemoved": 1 }
+
+#In this way the document has beed removed
+
+#Delete multiple Documents
+
+#If your query matches multiply documents, the remove() will delete all of them
+
+db.potions.remove(
+	{"vendor": "Kettlecooked"}
+)
+WritteResult({ "nRemoved": 2})
+
+#In this way, it removed both documents that matches with the vendor
+
