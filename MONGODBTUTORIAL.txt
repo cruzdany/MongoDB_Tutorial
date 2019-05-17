@@ -1,6 +1,8 @@
+CHEAT SHEET MONGODB BY DANIEL CRUZ
+
 use database 
 
-#The command “use” automatically creates you a database and put you inside of it with the name “database”
+#The command “use” automatically creates you a database and puts you inside of it with the name “database”
 
 var new = {“name”: “Daniel”, “lastname”: “Cruz”} 
 
@@ -32,8 +34,7 @@ db.new1.find({“name”: “Daniel”})
 
 db.new1.insert ({“Ingredients”: {“strength”: 2, “flavot”: 5}) 
 
-#As you could see, you not only can store strings “”, you can also add Numbers: 2, 3.456; Boolenas: True, False; Arrays: [“new array”]; Null values; the date, but in this case, the 
-
-#months start in 0, so, if for example, you, want to use the month March, you should put something like this: new Date(2012, 2, 8), and this will show you the March 8th of 2012.
-
-# 
+#As you could see, you not only can store strings you can also add Numbers: 2, 3.456; Boolenas: True, False; Arrays: #[
+#new array]; Null values; the date, but in this case, the months start in 0, so, if for example, you, want to use the month March, 
+#you should put something like this: new Date(2012, 2, 8), and this will show you the March 8th of 2012.
+ 
