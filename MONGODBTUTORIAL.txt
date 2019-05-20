@@ -81,3 +81,28 @@ WritteResult({ "nRemoved": 2})
 
 #In this way, it removed both documents that matches with the vendor
 
+#####QUESTIONS#######
+
+#1. What is MongoDB?
+Mongo-DB is a document database which provides high performance, high availability and easy scalability. 
+
+#2. what are indexes in MongoDB?
+Indexes are special structures in MongoDB, which stores a small portion of the data set in an easy to traverse form. Ordered by the value of the field specified in the index, the index stores the value of a specific field or set of fields. 
+
+#3. What makes MongoDB the best?
+MongoDB is considered to be best NoSQL database because of :Document-oriented (DO)
+High performance (HP)
+High availability (HA)
+Easy scalability
+Rich query language
+
+#4. What is “Namespace” in MongoDB?
+The concatenation of the collection name and database name is called a namespace.  
+MongoDB stores BSON (Binary Interchange and Structure Object Notation) objects in the collection. 
+
+#5. How is MongoDB better than other SQL databases?
+MongoDB allows a highly flexible and scalable document structure. 
+For example, one data document in MongoDB can have five columns and the other one in the same collection can have ten columns. 
+Also, MongoDB database are faster as compared to SQL databases due to efficient indexing and storage techniques.
+
+
