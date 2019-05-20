@@ -86,7 +86,7 @@ WritteResult({ "nRemoved": 2})
 #1. What is MongoDB?
 Mongo-DB is a document database which provides high performance, high availability and easy scalability. 
 
-#2. what are indexes in MongoDB?
+#2. What are indexes in MongoDB?
 Indexes are special structures in MongoDB, which stores a small portion of the data set in an easy to traverse form. 
 Ordered by the value of the field specified in the index, the index stores the value of a specific field or set of fields. 
 
@@ -106,4 +106,35 @@ MongoDB allows a highly flexible and scalable document structure.
 For example, one data document in MongoDB can have five columns and the other one in the same collection can have ten columns. 
 Also, MongoDB database are faster as compared to SQL databases due to efficient indexing and storage techniques.
 
+#6. What is the role of profiler in MongoDB?
+MongoDB database profiler shows performance characteristics of each operation against the database. 
+You can find queries using the profiler that are slower than they should be. 
 
+#7. What is the feature in MongoDB to do safe backups that you can use?
+Journaling is the feature in MongoDB that you can use to do safe backups. 
+
+#8. What is CRUD in MongoDB?
+Mongodb provides CRUD operations that are create, Read, Update, Delete.
+
+#9. What is sharding?
+Sharding means to store the data on the multiple machines.
+
+#10. What is replication?
+Replication is the process of synchronizing data across multiple servers.
+
+#11. What is use of GridFS in mongodb?
+GridFS is used for storing and retrieving the large files like audio, Images, Video files.
+
+#12. Which type of data mongodb store?
+MongoDB stores data in the form of documents, which are JSON-like field and value pairs.
+
+#13. What is storage encryption?
+Storage Encryption encrypts all MongoDB data on the storage or operating system to ensure that only authorized processes can access protected data.
+
+#14. What is Map reduce?
+Map-reduce is a generic multi-phase data aggregation modality which is used for processing quantities of data.
+
+#15. What is a covered query in MongoDB?
+A covered query is the one in which:
+Fields used in the query are part of an index used in the query, and
+The fields returned in the results are in the same index
