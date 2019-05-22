@@ -81,6 +81,137 @@ WritteResult({ "nRemoved": 2})
 
 #In this way, it removed both documents that matches with the vendor
 
+#UPDATING
+#You must use the "$set" if you only write "set" that will be your new parameter
+#When multi is true, the update modifies all matching documents
+	db.music.update({"name": "Reik"},
+		{"$set": {"name": "Justin Bieber"})
+
+#Updating Multiple Documents
+#The update method can take a third parameter for options
+db.potions.update(  
+		{"vendor": "KC"},
+		 options.WriteResult({"nMatched": 4,"nUpserted": 0,"nModified": 4 })
+		 4 documents matched and modifiedNotice
+
+
+
+#Aggregate method
+
+#“Aggregate” is a fancy word for combining data
+
+#Before doing this, of course you must have data inserted in that database, but those data will be combined with these ones others.
+#For example
+
+db.music.insert(
+	{"name": "Reik", "type": "Pop"}
+	)
+
+#And this one will be combined
+
+db.music.aggregate(
+	[{"$group": {"_id": "type"}}]
+)
+
+
+#Using the Aggregation Framework to Group Data
+
+#For doing this, we will insert four more music data
+db.music.insert(
+	{"name": "Buki", "type": "Sad_music"}
+	)
+
+db.music.insert(
+	{"name": "Bad Bunny", "type": "Reggaeton"}
+	)
+
+db.music.insert(
+	{"name": "Juan Gabriel", "type": "Sad_music"}
+	)
+
+#Now we pass to the aggregate method
+s
+db.music.aggregate(
+	[{"$group": {"_id": "$type"}}]
+)
+
+#What you should see, is this:
+
+{"_id": "Sad_music"},
+{"_id": "Reggaeton"},
+{"_id": "Sad_music"}
+
+#In the "_id", you will see the "type" of music
+
+
+#Using Accumulators
+
+db.music.aggregate([{
+	"$group": {"_id": "$type", "total": {"$sum": 1}}
+}])
+
+#What you should see is the sum of how many have the same type of music in the "_id" field
+
+{"_id": "Sad_music", "total": 2},
+{"_id": "Reggaeton", "total": 1}
+
+#Field Paths Vs. Operators
+
+#When values begin with a "$", they represent field paths that point to the value
+
+#When fields begin with a "$", they are operators that perform a task
+
+#Example 
+
+#db.music.aggregate([{
+#	"$group": {"_id": "$type", "total": {"$sum": 1}}
+#}])
+
+#They are the "$group" and "$type"
+
+#Summing the Grade Per type	
+
+#The "$grade" is the field path
+
+db.potions.aggregate(
+	[{"$group": {"id": "$type", "total": {"$sum": 1}, "grade_total": {"$sum": "$grade"}}}
+	])
+	
+#Then you will see something like this
+
+{ "_id" : "Pop", "total" : 1, "grade_total" : 0 }
+{ "_id" : "Reggaeton", "total" : 1, "grade_total" : 0 }
+{ "_id" : "Sad_music", "total" : 2, "grade_total" : 0 }
+
+
+#Averaging Potion Grade Per type
+
+db.music.aggregate(
+	[{"$group": {"_id": "$type", "avg_type": {"$avg": "$type"}}}]
+	)
+
+#You should see somehting like this:
+
+
+{ "_id" : "Pop", "avg_type" : null }
+{ "_id" : "Reggaeton", "avg_type" : null }
+{ "_id" : "Sad_music", "avg_type" : null }
+
+
+#Using $max and $min Together
+#Here, we should take in consideration the reserved words, which are "$max" and "$min", and what this ones will show you is the minimum and maximum value
+
+db.music.aggregate(
+	[{"$group": {"_id": "$type", "max_grade": {"$max": "$type"}, "min_grade": {"$min": "$grade"}}}]
+	)
+
+#We should see something like this: 
+
+{ "_id" : "Pop", "max_grade" : "Pop", "min_grade" : null }
+{ "_id" : "Reggaeton", "max_grade" : "Reggaeton", "min_grade" : null }
+{ "_id" : "Sad_music", "max_grade" : "Sad_music", "min_grade" : null }
+
+
 #####QUESTIONS#######
 
 #1. What is MongoDB?
@@ -138,3 +269,6 @@ Map-reduce is a generic multi-phase data aggregation modality which is used for 
 A covered query is the one in which:
 Fields used in the query are part of an index used in the query, and
 The fields returned in the results are in the same index
+
+
+#READ THE BOOK UNTIL PAGE 54
