@@ -38,21 +38,20 @@ db.new1.find({
 
 #This will show you the specific new1, which has the exactly data you put in order to find.
 
-#If you for example, want to find documents which has the vendor Kettlecooked and will match with all of them, like this:
-db.potions.find({"vendor": "Kettlecooked"})
+#If you for example, want to find documents which has the type "Sad_music" and will match with all of them, like this:
+db.potions.find({"vendor": "Sad_music"})
 {     
    "_id": ObjectId("55d232a5819aa726..."),
-   "name":"Invisibility", 
-   "vendor":"Kettlecooked" }  
+   "name":"Reik", 
+   "type":"Sad_music" }  
 {  "_id": ObjectId("55c3b9501aad0cb0..."),
-   "name":"Shrinking", 
-   "vendor":"Kettlecooked"}
+   "name":"Juan Gabriel", 
+   "type":"Sad_music"}
 
 #If your for example want to save inside the database a object, you could use this:
 
 db.new1.insert ({
-		    “Ingredients”: {“strength”: 2, “flavot”: 5
-	       }) 
+		    “Ingredients”: {“strength”: 2, “flavot”: 5}) 
 
 #As you could see, you not only can store strings you can also add Numbers: 2, 3.456; Boolenas: True, False; Arrays: #[
 #new array]; Null values; the date, but in this case, the months start in 0, so, if for example, you, want to use the month March, 
@@ -62,37 +61,228 @@ db.new1.insert ({
 
 #The remove() collection method will delete documents that match the provided query
 
-db.potions.remove(
-	{"name": "Love"}
+db.music.remove(
+	{"name": "Reik"}
 )
 
-WriteResult({ "nRemoved": 1 }
+#You should see as a result, something like this:
+
+#WriteResult({ "nRemoved": 1 }
 
 #In this way the document has beed removed
+
 
 #Delete multiple Documents
 
 #If your query matches multiply documents, the remove() will delete all of them
 
-db.potions.remove(
-	{"vendor": "Kettlecooked"}
+db.music.remove(
+	{"type": "Sad_music"}
 )
 WritteResult({ "nRemoved": 2})
 
 #In this way, it removed both documents that matches with the vendor
 
 #UPDATING
+
 #You must use the "$set" if you only write "set" that will be your new parameter
 #When multi is true, the update modifies all matching documents
+
 	db.music.update({"name": "Reik"},
 		{"$set": {"name": "Justin Bieber"})
 
+
+#Update Without an Operator
+
+#First, we insert a data:
+
+db.music.insert({"name": Justin Bieber, "type": pop, "year": 2005})
+
+db.music.update({"name": Justin Bieber, "type": "pop", "year": 2008})
+
+#So, here our document will be updated
+
+
 #Updating Multiple Documents
+
 #The update method can take a third parameter for options
-db.potions.update(  
-		{"vendor": "KC"},
-		 options.WriteResult({"nMatched": 4,"nUpserted": 0,"nModified": 4 })
-		 4 documents matched and modifiedNotice
+
+db.music.update(  
+		{"type": "Cumbias"}, {"$set": {"type": "Sad_music"}}, {"multi": true}
+		)
+
+#You should see this:
+
+WriteResult({
+	"nMatched": 3,
+	"Upserted": 0,
+	"nModified": 3
+})		
+
+#Update a Document’s Count
+
+
+#We can use the $incoperator to increment the count of an existing log document.
+
+db.music.update({"name": "Justin Bieber"}, 
+				{"$inc": {"count": 1}}
+			    )
+#With $inc, the value will be incrementing
+
+
+#Update a Non-existing Potion
+
+db.music.update({"name": "The Weekend"}, {"$inc": {"count": 1}}
+				)
+
+#This is what should show up:
+
+WriteResult({               
+			"nMatched": 0,       
+			"nUpserted": 0,       
+			"nModified": 0}
+			)		
+
+
+#Find or Create With Upsert	
+
+#The upsert option either updates an existing document or creates a new one.
+
+#If the data does not exist, it creates a new one
+
+db.music.update({"name": "Justin Bieber"}, {"$inc": {"count": 1}}, {"upsert": true}
+				)
+
+#You should see this:
+
+WriteResult({               
+			"nMatched": 0,       
+			"nUpserted": 1,  #Here it is the modification  A document created
+			"nModified": 0})
+
+
+#Updating Once More
+#If we run the same update again, the update will act normally and upsert won’t create another document
+
+db.music.update({"name": "Justin Bieber"}, {"$inc": {"count": 1}}, {"upsert": true}
+				)
+
+#This will probably show up:
+
+WriteResult({              
+			"nMatched": 1,       
+ 			"nUpserted": 0,       
+ 			"nModified": 1}
+ 			)
+
+#The document is found and modified but nothing is created
+
+
+#Removing Fields From Documents
+db.music.update({},
+				{"$unset": {"type": ""}},{"multi": true}
+				)
+
+#The {} in black is referring for all music
+#The multi update all potions				
+#The "" will delete all the type of all music
+
+
+#Updating a Field Name With $rename
+
+#We can use $rename to change field names
+
+db.music.update({}, {"$rename": {"type": "kind_of_music"}}, {"multi": true}
+				)
+
+#When using $rename we are specifing a field
+#"type" will be the old name and "kind_of_music" will be the new name of that field
+
+
+#Potion Ingredient Regulation
+
+#This allows us to update an array, but in order of doing this, we have to add first an array in our current database:
+
+db.music.insert({"name": "Anuel aa", "best_sellers": ["Bebe", "Amanecer", "Verte ir"]}
+				)
+#Let's asume we want to change "Verte ir" with the number 21
+
+#This is what will do:
+
+db.music.update({"best_sellers": "Verte ir"}, {"$set": {"best_sellers": "23"}}
+				)
+
+#As you could see, this changed the entire array with only one value, which is 23, instead of updating only one element
+
+#So, what we can do in order of solving this is:
+
+
+#Updating Array Values by Location
+#pos = position
+
+#{"best_sellers": ["Bebe", "Amanecer", "Verte ir"]}
+				   pos0      pos1        pos2
+
+#Updating Single Array Value
+#The $set operator will update the value or a specific field
+
+db.music.update({"name": "Justin Bieber"}, {"$set": "best_sellers.2": 23})
+
+#This will show up:
+
+WriteResult({"nMatched": 1,"nUpserted": 0,"nModified: 1})
+
+#And this will be like this now
+
+#({"name": "Anuel aa", "best_sellers": ["Bebe", "Amanecer", "23"]})
+
+
+#Updating Multiple Arrays
+#If we want to update multiple arrays, what we would use is the "$" in the specific field by adding it with a point, like this: "best_sellers.$"
+
+db.music.update(
+				{"best_sellers": "Verte ir"}, {"$set": {"best_sellers.$": 23 }}, {"multi": true}
+			   )
+#Assuming you inserted more documents with different best sellers, it will show up, something like this:
+
+#["Adictiva", 23, "A solas"]
+#["23, "Secreto", "Quiere Beber"]
+#["Culpables", "Ella Quiere Beber Remix", 23]			   
+
+
+#Removing the First or Last Value of an Array
+#If you put the 1, it will remove the first element and if you put -1, it will remove the last element
+#The $popoperator will remove either the first or last value of an array
+
+db.music.update({"name": "Anuel Aa"}, {"$pop": {"best_sellers": 1}})
+
+
+#Adding Values to the End of an Array
+#The $push operator will add a value to the end of an array.
+
+db.music.update({"name": "Anuel Aa"}, {"$push": {"best_sellers": "Te Boté"}})
+
+#It will be added to the end
+
+
+#Adding Unique Values to an Array
+#The $addToSet operator will add a value to the end of an array unless it is already present
+
+db.music.update({"name": "Anuel Aa"}, {"$addToSet": {"best_sellers": "Te Boté"}})
+
+#Since it is already added, it won´t be added again
+
+
+#Removing Values From an Array
+#The $pull operator will remove any instance of a value from an array
+
+db.music.update({"name": "Anuel Aa"}, {"$pull": {"best_sellers": "Te Boté"}})
+
+#It will be removed from the array
+
+
+#Querying With Multiple Criteria
+
 
 
 

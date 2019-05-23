@@ -1,0 +1,21 @@
+What is Apache HBase?
+
+It is a column-oriented database
+
+Is used to store the sparse data sets. 
+
+It is run on the top of Hadoop file distributed system. 
+
+Apache HBase is a database that runs on a Hadoop cluster. 
+
+3 COMMON QUESTIONS
+
+WHICH OPERATING SYSTEM IS SUPPORTED BY HBASE?
+HBase supports those OS which supports java like windows, Linux.
+
+HOW CAN CLIENTS GET ACCESS TO HBASE?
+Clients can access HBase data through either a native Java API or through a Thrift or REST gateway.
+
+
+WHAT ARE THE OPERATIONAL COMMANDS OF HBASE?
+Operational commands of HBase are Get, Delete, Put, Increment, and Scan.
