@@ -1,3 +1,5 @@
+####LEARN MONGODB IN Y MINUTES######
+
 ####CHEAT SHEET MONGODB BY DANIEL CRUZ###
 
 use database 
@@ -281,11 +283,78 @@ db.music.update({"name": "Anuel Aa"}, {"$pull": {"best_sellers": "Te Boté"}})
 #It will be removed from the array
 
 
-#Querying With Multiple Criteria
+#Comparison Query Operators
+#There are comon comparison query operators to match documents given a specific value we can use:
+
+$gt #greater than
+$lt #less than
+$gte #greater or equal to
+$lte #less or equal to
+$ne #not equal to
+
+#Finding Potions That Are Less Than "any value"
+#First: insert two examples
+db.music.insert({"name": "Drake", "year": 2005})
+db.music.insert({"name": "Kendrick Lamar", "year": 2004})
+#Now we make the query
+db.music.find({"year": {"$lt: 2005}})
+
+#Finding Potions Between Prices
+db.music.find({"year": {"$gt": 2003, "$lt": 2006}})
+
+#Queries of Non-equality
+db.music.find({"year": {"$ne": 2005}})
 
 
+#Projections 
+#You can use $find to use the projections, we can use it to specify the exact fields we want to find by setting their value to true
+db.music.find({"year": {"$gte": 2002}}, {"name": true})
+
+#Excluding Fields
+
+db.music.find({"year": {"$gte": 2003}}, {"name": true, "type": false})
+
+#Counting Our Music
+#We can count the total of our music by using the method count
+
+db.music.find().count()
+
+#Sorting
+#If we ant to sort our document, we can do it by using find() and the method sort()
+#We have to take in consideration that 1 is ascending order and -1 is descending order
+
+db.music.find.sort({"name": 1})
+
+db.music.find().sort({"name": -1}) 
 
 
+#If you want to limit the pages of your document, you could use the limit() and skip() methods
+
+db.music.find().limit(4)
+db.music.find().skip(4).limit(4)
+
+#An important thing to take in consideration is that MongoDB allows embedding documents specifying or adding missing data 
+#If you have a duplication on the data, you can make a reference on a new collection
+#You must use the "id" of the each document to develop a better query and reference the collection you did
+#if you have the reference on a document, the collection will have that part of the information that was referenced
+#You can't write new parameters in atomic level if the syntax doesn't is from the same collection
+
+#In MongoDB is not allowed the transactions for the relationship between queries and collection.
+
+#Differences between embedding and referecing a document:
+Embedding:
+#Single query
+#Documents accsed through parent
+#Atomic writes
+
+Referencing:
+#Requires 2 queries
+#Documents exist independently
+#Doesn't support multi-document writes
+
+#Comments are allowed on both of them
+
+#Aggregation Framework
 #Aggregate method
 
 #“Aggregate” is a fancy word for combining data
@@ -383,9 +452,9 @@ db.music.aggregate(
 #You should see somehting like this:
 
 
-{ "_id" : "Pop", "avg_type" : null }
-{ "_id" : "Reggaeton", "avg_type" : null }
-{ "_id" : "Sad_music", "avg_type" : null }
+{ "_id" : "Pop", "avg_type" : 90 }
+{ "_id" : "Reggaeton", "avg_type" : 60 }
+{ "_id" : "Sad_music", "avg_type" : 80 }
 
 
 #Using $max and $min Together
@@ -397,10 +466,53 @@ db.music.aggregate(
 
 #We should see something like this: 
 
-{ "_id" : "Pop", "max_grade" : "Pop", "min_grade" : null }
-{ "_id" : "Reggaeton", "max_grade" : "Reggaeton", "min_grade" : null }
-{ "_id" : "Sad_music", "max_grade" : "Sad_music", "min_grade" : null }
+{ "_id" : "Pop", "max_grade" : "Pop", "min_grade" : 90 }
+{ "_id" : "Reggaeton", "max_grade" : "Reggaeton", "min_grade" : 60 }
+{ "_id" : "Sad_music", "max_grade" : "Sad_music", "min_grade" : 80 }
 
+
+#Aggregation Pipeline
+#Here we can pass data through many stages in order to change it along the way
+
+db.music.aggregate([stage, stage, stage])
+
+#What a stage look like is like this: 
+
+db.music.aggregate({"$group": {"_id": "$name", "total": {"$sum": 1}}})
+
+#How does it work? Well, each stage modifies the working data set and then passes the altered documents to the next stage until we get our desired result.
+
+#$match operator
+#We can use it to reduce the number of documents for better performance
+
+db.muisc.aggregate([{"$match": {"best_sellers": "Bebe"}}])
+
+#Grouping Potions With Data 
+#
+db.music.aggregate([{"$match": {"best_sellers": "Bebe"}}, {"$group": {"_id": "name", "year_count": {"$sum": 1}
+					}
+				}]
+			)
+
+#We can also Match with the query operators
+
+db.muisc.find([{"$match": {"year": {"$lt": 2007}}}
+			])
+
+#We also can make Grouping in match
+
+db.music.aggregate([{"$match": {"year": {"$lt": 2007}}}, {"$group": {"_id": "$name"}}
+				  ])
+
+#We can use too limitings in Match
+
+db.music.aggregate([{"$match": {"year": {"$lt": 2007}}}, {"$group": {"_id": "$name"}}, {"$limit":  3}
+				  ])
+
+#Projections While Aggregating
+#It is common to see $match and $project used together early on and throughout the pipeline
+
+db.muisc.aggregate([{"$match": {"year": {"$lt": 2006}}}, {"$project": {"_id": false, "name_id": true, "year": false}}])			
 
 #####QUESTIONS#######
 
@@ -460,5 +572,51 @@ A covered query is the one in which:
 Fields used in the query are part of an index used in the query, and
 The fields returned in the results are in the same index
 
+##REFERENCES##
+https://www.tutorialspoint.com/mongodb/mongodb_interview_questions.htm
+https://intellipaat.com/interview-question/mongodb-interview-questions/
+http://www.webdevelopmenthelp.net/2017/01/mongodb-interview-questions.html
 
-#READ THE BOOK UNTIL PAGE 54
+
+#################### EXTRA MATERIAL ##############################################
+#################### IMPORTANT QUESTIONS TO TAKE IN CONSIDERATION #####################
+
+###Usage Of MongoDB###
+#Where can we use MongoDB?
+#We use MongoDB as the primary data store for operational applications with real-time requirements. 
+#MongoDB is fit to use for 60%-80% of the applications that are developing in today’s world.
+
+#Does MongoDb require a lot of RAM?
+#MondoDB uses the free memory that is on the computer as its cache..
+
+#When should we use MongoDB?
+#If you can represent your data in a form of a bunch of documents, MongoBD is the option.
+
+#When should not we use Mongo DB?
+#If you would rather imagine your data as a bunch of interconnected tables, MongoDB would not be the right option.
+
+###MongoDB and SQL Database Manager###
+#How is MongoDB better than other SQL databases?
+#MongoDB allows a highly flexible and scalable document structure. 
+#For example, one data document in MongoDB can have five columns and the other one in the same collection can have ten columns. 
+#Also, MongoDB database are faster as compared to SQL databases due to efficient indexing and storage techniques.
+
+#Does MongoDB support SQL?
+#Not directly, no. However, MongoDB does support a rich query language of its own.
+
+#What are differences between MongoDB and MySQL?
+#Both these databases are free and open source.
+#The speed in which your queries are being processed in MongoDB is fast 
+#as compared to MySQL. The way in which data is being represented in MongoDB and MySQL is also very different.
+
+#It depends on the problem you face, if you have a database with a structure already defined, then MySQL is for you, if your database does #not have an apparent order then MongoDb is what you need. The difference is that currently most data banks are presented without any #specific order so MongoDb is having more presence.
+
+###Basic Commands###
+#What is "namespace" in MongoDB?
+#MongoDB stores BSON (Binary Interchange and Structure Object Notation) objects in the collection. The concatenation of the collection name #and database name is called a namespace. 
+
+###Collections and Databases###
+#What is collection in MongoDB?
+#A collection is a group of documents. If a document is the MongoDB analog of a row in a relational database, then collection is 
+#the analog to a table. Collections have dynamic schemas. This means that the documents within a single collection can have any 
+#number of different shapes. 
